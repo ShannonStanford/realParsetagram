@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="14dp"
         android:layout_marginTop="14dp"
-        app:srcCompat="@android:color/holo_blue_dark" />
+        app:srcCompat="@drawable/ic_profile" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -42,7 +42,7 @@
         android:layout_alignStart="@+id/ivProfilePic"
         android:layout_below="@+id/ivPicture"
         android:layout_marginStart="9dp"
-        android:background="@drawable/like" />
+        android:background="@drawable/ufi_heart" />
 
     <Button
         android:id="@+id/btComment"
@@ -50,7 +50,7 @@
         android:layout_height="39dp"
         android:layout_alignEnd="@+id/tvUsername"
         android:layout_below="@+id/ivPicture"
-        android:background="@drawable/comment2" />
+        android:background="@drawable/ufi_comment" />
 
     <Button
         android:id="@+id/btShare"
@@ -58,7 +58,7 @@
         android:layout_height="43dp"
         android:layout_below="@+id/ivPicture"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/share" />
+        android:background="@drawable/direct" />
 
     <TextView
         android:id="@+id/tvCaption"
