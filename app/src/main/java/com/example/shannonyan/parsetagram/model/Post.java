@@ -12,6 +12,7 @@ public class Post extends ParseObject{
     private static final String KEY_IMAGE = "image";
     private static final String KEY_USER = "user";
 
+
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
     }
@@ -21,6 +22,7 @@ public class Post extends ParseObject{
     }
 
     public ParseFile getImage() {
+
         return getParseFile(KEY_IMAGE);
     }
 

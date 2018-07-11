@@ -42,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
 //
 //        etDescription = findViewById(R.id.etDescription);
 //        btCreate = findViewById(R.id.btCreate);
@@ -85,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        });
 
-        loadTopPosts();
+        //loadTopPosts();
 
 
         //NEW
