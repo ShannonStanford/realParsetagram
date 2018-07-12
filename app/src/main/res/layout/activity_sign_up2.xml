@@ -15,11 +15,12 @@
         android:id="@+id/etUsername"
         android:layout_width="255dp"
         android:layout_height="51dp"
-        android:layout_above="@+id/etPassword"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="238dp"
         android:background="@drawable/transparent"
         android:ems="10"
-        android:hint="Username"
+        android:hint="  Username"
         android:inputType="textPersonName"
         android:textColor="@android:color/background_light"
         android:textColorHint="#ffffff"
@@ -29,7 +30,9 @@
         android:id="@+id/etPassword"
         android:layout_width="257dp"
         android:layout_height="56dp"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="215dp"
         android:background="@drawable/transparent"
         android:ems="10"
         android:hint="Password"
@@ -44,27 +47,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/transparent"
-        android:text="Sign In"
-        android:textColor="@android:color/background_light" />
-
-    <Button
-        android:id="@+id/btSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:text="Don't have an account? Sign up."
-        android:background="@drawable/transparent"
+        android:text="Sign Up"
         android:textColor="@android:color/background_light" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="228dp"
-        android:layout_height="101dp"
+        android:layout_width="185dp"
+        android:layout_height="57dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="69dp"
+        android:layout_marginTop="29dp"
         app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:text="Input your new username and password"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp" />
+
 </RelativeLayout>

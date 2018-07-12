@@ -1,5 +1,6 @@
 package com.example.shannonyan.parsetagram;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,14 +20,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.shannonyan.parsetagram.model.Post;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,15 +34,15 @@ public class CameraFragment extends Fragment {
     private static final String imagePath = Environment.getExternalStorageDirectory() + "/storage/emulated/0/DCIM/Camera/IMG_20180710_130915.jpg";
     private EditText etDescription;
     private Button btCreate;
-    private Button btRefresh;
     private Button btCamera;
     private ImageView ivPicture;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("camera", "worked");
-
+        context = getActivity();
 
     }
 
@@ -55,30 +54,15 @@ public class CameraFragment extends Fragment {
         newPost.setUser(user);
 
         newPost.saveInBackground();
+
+        etDescription.setText("");
+        ivPicture.setColorFilter(context.getResources().getColor(R.color.colorAccent));
     }
 
-    private void loadTopPosts() {
-        final Post.Query postQuery = new Post.Query();
-        postQuery.getTop().withUser();
-
-        postQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if(e == null){
-                    for(int i = 0; i < objects.size(); ++i){
-                        Log.d("HomeActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
-                    }
-
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
 
     public final String APP_TAG = "MyCustomApp";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
     public String photoFileName = "photo.jpg";
     File photoFile;
 
@@ -126,14 +110,16 @@ public class CameraFragment extends Fragment {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
+                ImageView ivPreview = (ImageView) getView().findViewById(R.id.ivPicture);
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(takenImage, 50, 50, false);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(takenImage, ivPreview.getWidth() , ivPreview.getHeight(), false);
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
-                ImageView ivPreview = (ImageView) getView().findViewById(R.id.ivPicture);
                 ivPreview.setImageBitmap(resizedBitmap);
+                System.out.println("worked");
             } else { // Result was a failure
                 Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                System.out.println("did not work");
             }
         }
     }
@@ -148,7 +134,6 @@ public class CameraFragment extends Fragment {
         etDescription = view.findViewById(R.id.etDescription);
         btCreate = view.findViewById(R.id.btCreate);
         btCamera = view.findViewById(R.id.btCamera);
-        btRefresh = view.findViewById(R.id.btRefresh);
         ivPicture = view.findViewById(R.id.ivPicture);
 
         btCreate.setOnClickListener(new View.OnClickListener() {
@@ -178,13 +163,6 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onLaunchCamera();
-            }
-        });
-
-        btRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadTopPosts();
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.shannonyan.parsetagram;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.shannonyan.parsetagram.model.Post;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -44,7 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         final Post post = mPosts.get(position);
 
         holder.tvUsername.setText(post.getUser().getUsername());
-        holder.tvCaption.setText(post.getDescription());
+        holder.tvCaption.setText(post.getUser().getUsername() + "\n" + post.getDescription());
         holder.tvCreatedAt.setText(post.getCreatedAt().toString());
         Log.d("PostAdapter", "gets here");
 
@@ -80,6 +83,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
 
         @Override
         public void onClick(View v) {
+
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                Post post = mPosts.get(position);
+                // create intent for the new activity
+                Intent intent = new Intent(context, PostDetails.class);
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                // show the activity
+                context.startActivity(intent);
+            }
 
         }
     }

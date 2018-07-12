@@ -35,7 +35,7 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         // Define the class we would like to query
         View view = inflater.inflate(R.layout.fragment_feed_fragment, container, false);
 
@@ -93,7 +93,7 @@ public class FeedFragment extends Fragment {
                         Log.d("HomeActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
                         Post post = objects.get(i);
 
-                        posts.add(post);
+                        posts.add(0, post);
                         postAdapter.notifyItemInserted(0);
                     }
 
