@@ -35,6 +35,7 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // Define the class we would like to query
         View view = inflater.inflate(R.layout.fragment_feed_fragment, container, false);
 
@@ -82,6 +83,8 @@ public class FeedFragment extends Fragment {
         final Post.Query postQuery = new Post.Query();
         postQuery.getTop().withUser();
 
+        postAdapter.clear();
+        //postAdapter.addAll(posts);
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -99,6 +102,7 @@ public class FeedFragment extends Fragment {
                 }
             }
         });
+        swipeContainer.setRefreshing(false);
     }
 
 }

@@ -53,11 +53,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         //addProfilePicLater
 
 
-
-
-
-
-
     }
 
     @Override
@@ -87,5 +82,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         public void onClick(View v) {
 
         }
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        mPosts.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Post> list) {
+        mPosts.addAll(list);
+        notifyDataSetChanged();
     }
 }
