@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.shannonyan.parsetagram.model.Post;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -44,5 +46,13 @@ public class PostDetails extends AppCompatActivity {
         tvCreatedAt.setText(post.getCreatedAt().toString());
 
         Glide.with(getBaseContext()).load(post.getImage().getUrl()).into(ivPicture);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseFile pic = currentUser.getParseFile("ProfilePicture");
+
+        if(pic != null) {
+            String url = pic.getUrl();
+            Glide.with(getBaseContext()).load(url).into(ivProfilePic);
+        }
     }
 }

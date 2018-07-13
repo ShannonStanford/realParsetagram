@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.shannonyan.parsetagram.model.Post;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -49,13 +50,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         holder.tvUsername.setText(post.getUser().getUsername());
         holder.tvCaption.setText(post.getUser().getUsername() + "\n" + post.getDescription());
         holder.tvCreatedAt.setText(post.getCreatedAt().toString());
-        Log.d("PostAdapter", "gets here");
 
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivPicture);
 
-        //addProfilePicLater
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseFile pic = currentUser.getParseFile("ProfilePicture");
 
-
+        if( pic != null) {
+            String url = pic.getUrl();
+            Glide.with(context).load(url).into(holder.ivProfilePic);
+        }
     }
 
     @Override
