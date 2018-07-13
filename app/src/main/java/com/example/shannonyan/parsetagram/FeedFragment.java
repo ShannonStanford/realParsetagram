@@ -53,7 +53,6 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-
         // Find the RecyclerView
         rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
 
@@ -70,21 +69,18 @@ public class FeedFragment extends Fragment {
         rvPosts.setAdapter(postAdapter);
 
         Log.d("feed", "about to get to load top posts");
+
         loadTopPosts();
 
         return view;
     }
 
 
-
-
-
     private void loadTopPosts() {
         final Post.Query postQuery = new Post.Query();
-        postQuery.getTop().withUser();
+        postQuery.getTop().withUser().orderByAscending("createdAt");
 
-        postAdapter.clear();
-        //postAdapter.addAll(posts);
+        posts.clear();
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -93,7 +89,7 @@ public class FeedFragment extends Fragment {
                         Log.d("HomeActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
                         Post post = objects.get(i);
 
-                        posts.add(0, post);
+                        posts.add(0,post);
                         postAdapter.notifyItemInserted(0);
                     }
 

@@ -10,8 +10,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,7 +33,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class CameraFragment extends Fragment {
 
-    private static final String imagePath = Environment.getExternalStorageDirectory() + "/storage/emulated/0/DCIM/Camera/IMG_20180710_130915.jpg";
     private EditText etDescription;
     private Button btCreate;
     private Button btCamera;
@@ -41,13 +42,12 @@ public class CameraFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("camera", "worked");
         context = getActivity();
-
     }
 
-
     private void createPost(String description, ParseFile imageFile, ParseUser user){
+
+        //showProgressBar();
         final Post newPost = new Post();
         newPost.setDescription(description);
         newPost.setImage(imageFile);
@@ -55,8 +55,10 @@ public class CameraFragment extends Fragment {
 
         newPost.saveInBackground();
 
+        Toast.makeText(this.getContext(),"Post created",Toast.LENGTH_SHORT).show();
         etDescription.setText("");
         ivPicture.setColorFilter(context.getResources().getColor(R.color.colorAccent));
+        //hideProgressBar();
     }
 
 
@@ -128,8 +130,13 @@ public class CameraFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        Toolbar toolbar=(Toolbar) view.findViewById(R.id.my_toolbar);
+        toolbar.setNavigationIcon(R.drawable.nav_logo_whiteout);
 
         etDescription = view.findViewById(R.id.etDescription);
         btCreate = view.findViewById(R.id.btCreate);
@@ -154,25 +161,41 @@ public class CameraFragment extends Fragment {
                 });
 
 
+//                final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//
+//                final Fragment feedFragment = new FeedFragment();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.myFragment, feedFragment).commit();
+
+
+
+
 
             }
         });
-
-
         btCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLaunchCamera();
             }
         });
-
-
-
         return view;
+    }
 
+    MenuItem miActionProgressItem;
 
+    public void showProgressBar() {
+        // Show progress item
+        if( miActionProgressItem != null){
+            miActionProgressItem.setVisible(true);
+        }
+    }
 
-
+    public void hideProgressBar() {
+        // Hide progress item
+        if( miActionProgressItem != null) {
+            miActionProgressItem.setVisible(false);
+        }
     }
 
 }

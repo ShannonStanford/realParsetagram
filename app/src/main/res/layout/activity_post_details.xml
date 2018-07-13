@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".PostDetails">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
 
     <ImageView
@@ -50,9 +43,8 @@
         android:id="@+id/btLike"
         android:layout_width="37dp"
         android:layout_height="38dp"
-        android:layout_alignStart="@+id/ivProfilePic"
         android:layout_below="@+id/ivPicture"
-        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
         android:background="@drawable/ufi_heart" />
 
     <Button
@@ -60,14 +52,14 @@
         android:layout_width="43dp"
         android:layout_height="39dp"
         android:layout_below="@+id/ivPicture"
-        android:layout_toEndOf="@+id/tvCaption"
+        android:layout_marginLeft="50dp"
         android:background="@drawable/ufi_comment" />
 
     <Button
         android:id="@+id/btShare"
         android:layout_width="43dp"
         android:layout_height="43dp"
-        android:layout_alignEnd="@+id/tvUsername"
+        android:layout_marginLeft="100dp"
         android:layout_below="@+id/ivPicture"
         android:background="@drawable/direct" />
 
