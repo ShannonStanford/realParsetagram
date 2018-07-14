@@ -24,9 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
         ParseUser currentUser = ParseUser.getCurrentUser();
+
         if (currentUser != null) {
             Intent i = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(i);
@@ -57,9 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-
-
-
     }
 
     private void login(String username, String password){

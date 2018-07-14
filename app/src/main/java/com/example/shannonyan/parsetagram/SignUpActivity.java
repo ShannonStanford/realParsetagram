@@ -27,19 +27,13 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btSignUp = findViewById(R.id.btSignUp);
 
-
-
-
         btSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ParseUser user = new ParseUser();
-                // Set core properties
                 user.setUsername(etUsername.getText().toString());
                 user.setPassword(etPassword.getText().toString());
 
-                // Invoke signUpInBackground
                 user.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -54,15 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-
-
-
-
             }
         });
     }
-
-
-
-
 }

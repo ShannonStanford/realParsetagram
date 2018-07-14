@@ -20,23 +20,20 @@ import java.util.List;
 
 public class FeedFragment extends Fragment {
 
-    PostAdapter postAdapter;
-    ArrayList<Post> posts;
-    RecyclerView rvPosts;
-    private SwipeRefreshLayout swipeContainer;
+    public PostAdapter postAdapter;
+    public ArrayList<Post> posts;
+    public RecyclerView rvPosts;
 
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("feed", "worked");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        // Define the class we would like to query
         View view = inflater.inflate(R.layout.fragment_feed_fragment, container, false);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
@@ -52,35 +49,20 @@ public class FeedFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-        // Find the RecyclerView
         rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
-
-        // Init the arraylist (data source)
         posts = new ArrayList<>();
-
-        // construct the adapter from this datasource
-        postAdapter = new PostAdapter(posts);
-
-        //RecyclerView setup (layout manager, use adapter)
+        postAdapter = new PostAdapter(posts, (HomeActivity)getActivity());
         rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        //set the adapter
         rvPosts.setAdapter(postAdapter);
-
-        Log.d("feed", "about to get to load top posts");
-
         loadTopPosts();
-
         return view;
     }
-
 
     private void loadTopPosts() {
         final Post.Query postQuery = new Post.Query();
         postQuery.getTop().withUser().orderByAscending("createdAt");
-
         posts.clear();
+
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -88,17 +70,15 @@ public class FeedFragment extends Fragment {
                     for(int i = 0; i < objects.size(); ++i){
                         Log.d("HomeActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
                         Post post = objects.get(i);
-
                         posts.add(0,post);
                         postAdapter.notifyItemInserted(0);
                     }
-
                 } else {
                     e.printStackTrace();
                 }
             }
         });
+
         swipeContainer.setRefreshing(false);
     }
-
 }

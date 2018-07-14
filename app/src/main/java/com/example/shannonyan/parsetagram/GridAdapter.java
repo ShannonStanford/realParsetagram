@@ -26,7 +26,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     public GridAdapter(List<Post> posts) {
         mPosts = posts;
-
     }
 
     @NonNull
@@ -34,7 +33,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     public GridAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View postView = inflater.inflate(R.layout.item_post, parent, false);
+        View postView = inflater.inflate(R.layout.grid_item, parent, false);
         GridAdapter.ViewHolder viewHolder = new GridAdapter.ViewHolder(postView);
         return viewHolder;
     }
@@ -60,7 +59,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
             itemView.setOnClickListener(this);
         }
 
-
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
@@ -77,6 +75,4 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
             }
         }
     }
-
-
 }

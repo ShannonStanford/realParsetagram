@@ -17,46 +17,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-                <!--<EditText-->
-                <!--android:id="@+id/etDescription"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:ems="10"-->
-                <!--android:inputType="textPersonName"-->
-                <!--android:text="Name" />-->
-
-                <!--<Button-->
-                <!--android:id="@+id/btCreate"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="50dp"-->
-                <!--android:layout_marginTop="200dp"-->
-                <!--android:text="Create" />-->
-
-                <!--<Button-->
-                <!--android:id="@+id/btRefresh"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="150dp"-->
-                <!--android:layout_marginTop="200dp"-->
-                <!--android:text="Refresh" />-->
-
-                <!--<ImageView-->
-                <!--android:id="@+id/ivPicture"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:layout_marginLeft="200dp"-->
-                <!--android:layout_marginTop="200dp"-->
-                <!--app:srcCompat="@android:color/background_dark" />-->
-
-                <!--<Button-->
-                <!--android:id="@+id/btCamera"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="150dp"-->
-                <!--android:layout_marginTop="300dp"-->
-                <!--android:text="Camera" />-->
-
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView

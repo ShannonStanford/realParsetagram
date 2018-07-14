@@ -25,12 +25,14 @@ import butterknife.ButterKnife;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
 
+    public Context context;
+    public HomeActivity home;
+
     private List<Post> mPosts;
-    Context context;
 
-    public PostAdapter(List<Post> posts) {
+    public PostAdapter(List<Post> posts, HomeActivity home) {
         mPosts = posts;
-
+        this.home = home;
     }
 
     @NonNull
@@ -50,9 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
         holder.tvUsername.setText(post.getUser().getUsername());
         holder.tvCaption.setText(post.getUser().getUsername() + "\n" + post.getDescription());
         holder.tvCreatedAt.setText(post.getCreatedAt().toString());
-
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivPicture);
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseFile pic = currentUser.getParseFile("ProfilePicture");
 
@@ -60,6 +60,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
             String url = pic.getUrl();
             Glide.with(context).load(url).into(holder.ivProfilePic);
         }
+
+        holder.ivProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.openProfilePage();
+            }
+        });
     }
 
     @Override
@@ -68,7 +75,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
 
         @BindView(R.id.ivPicture) ImageView ivPicture;
         @BindView(R.id.ivProfilePic) ImageView ivProfilePic;
@@ -100,19 +106,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>  {
                 // show the activity
                 context.startActivity(intent);
             }
-
         }
-    }
-
-    // Clean all elements of the recycler
-    public void clear() {
-        mPosts.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<Post> list) {
-        mPosts.addAll(list);
-        notifyDataSetChanged();
     }
 }

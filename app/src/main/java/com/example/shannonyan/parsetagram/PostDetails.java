@@ -34,13 +34,11 @@ public class PostDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
-        //context = parent.getContext();
+        context = getBaseContext();
 
         ButterKnife.bind(this );
 
-        // unwrap the post passed in via intent, using its simple name as a key
-        post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-
+        post = Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
         tvUsername.setText(post.getUser().getUsername());
         tvCaption.setText(post.getUser().getUsername() + "\n" + post.getDescription());
         tvCreatedAt.setText(post.getCreatedAt().toString());

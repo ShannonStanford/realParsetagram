@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.shannonyan.parsetagram.model.Post;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -34,24 +40,39 @@ public class ProfileFragment extends Fragment {
     private Button btSignOut;
     private Button btProfPic;
     private ImageView ivProfilePicture;
-    Context context;
+
+    public Context context;
+    public GridAdapter gridAdapter;
+    public ArrayList<Post> posts;
+    public RecyclerView rvPosts;
+    public final String APP_TAG = "MyCustomApp";
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
+    public String photoFileName = "photo.jpg";
+    public File photoFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("profile", "worked");
         context = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         btSignOut = view.findViewById(R.id.btSignOut);
         btProfPic = view.findViewById(R.id.btProfPic);
         ivProfilePicture = view.findViewById(R.id.ivProfilePicture);
+        rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
+        posts = new ArrayList<>();
+        gridAdapter = new GridAdapter(posts);
+        rvPosts.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        rvPosts.setAdapter(gridAdapter);
+
+        loadTopPosts();
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseFile pic = currentUser.getParseFile("ProfilePicture");
@@ -62,7 +83,6 @@ public class ProfileFragment extends Fragment {
         } else {
             ivProfilePicture = view.findViewById(R.id.ivProfilePicture);
         }
-
 
         btSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,66 +95,56 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-
-
         btProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLaunchCamera();
             }
         });
-
-//        // First param is number of columns and second param is orientation i.e Vertical or Horizontal
-//        StaggeredGridLayoutManager gridLayoutManager =
-//                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        // Attach the layout manager to the recycler view
-//        recyclerView.setLayoutManager(gridLayoutManager);
-
-
         return view;
     }
 
-    public final String APP_TAG = "MyCustomApp";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-    public String photoFileName = "photo.jpg";
-    File photoFile;
+    private void loadTopPosts() {
+        final Post.Query postQuery = new Post.Query();
+        postQuery.getTop().withUser().orderByAscending("createdAt");
+        posts.clear();
+
+        postQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if(e == null){
+                    for(int i = 0; i < objects.size(); ++i){
+                        Log.d("HomeActivity", "Post[" + i + "] = " + objects.get(i).getDescription() + "\nusername = " + objects.get(i).getUser().getUsername());
+                        Post post = objects.get(i);
+                        posts.add(0,post);
+                        gridAdapter.notifyItemInserted(0);
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void onLaunchCamera() {
-        // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Create a File reference to access to future access
         photoFile = getPhotoFileUri(photoFileName);
-
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", photoFile); //changed this to getActivitity()
+        Uri fileProvider = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
-    // Returns the File for a photo stored on disk given the fileName
     public File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
         File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
 
-        // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.d(APP_TAG, "failed to create directory");
         }
 
-        // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
         return file;
     }
 
@@ -142,12 +152,9 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
                 ImageView ivProfilePicture = (ImageView) getView().findViewById(R.id.ivProfilePicture);
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 Bitmap resizedBitmap = Bitmap.createScaledBitmap(takenImage, ivProfilePicture.getWidth() , ivProfilePicture.getHeight(), false);
-                // RESIZE BITMAP, see section below
-                // Load the taken image into a preview
                 ivProfilePicture.setImageBitmap(resizedBitmap);
 
                 final ParseUser user = ParseUser.getCurrentUser();
@@ -161,17 +168,10 @@ public class ProfileFragment extends Fragment {
                         System.out.println("done");
                     }
                 });
-
-            } else { // Result was a failure
+            } else {
                 Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
                 System.out.println("did not work");
             }
         }
     }
-
-
-
-
-
-
 }

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivPicture"
-        android:layout_width="171dp"
-        android:layout_height="wrap_content"
+        android:layout_width="198dp"
+        android:layout_height="194dp"
         app:srcCompat="@drawable/background"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="1dp" />
